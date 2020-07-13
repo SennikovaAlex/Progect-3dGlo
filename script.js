@@ -380,7 +380,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
             event.preventDefault();
             form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
+            if (!statusMessage.textContent) { 
+                statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+            } else {
+                statusMessage.textContent = '';
+                statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+        }
+           
             const formData = new FormData(form);
             let body = {};
 
