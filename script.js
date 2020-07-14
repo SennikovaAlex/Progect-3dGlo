@@ -385,8 +385,8 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 statusMessage.textContent = '';
                 statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
-        }
-           
+            }
+
             const formData = new FormData(form);
             let body = {};
 
@@ -394,12 +394,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 body[val[0]] = val[1];
 
             };
-            postData(body, () => {
+
+            postData(body)
+            .then(() => {
                 statusMessage.textContent = successMesage;
-            }, (error) => {
+                })
+            .catch(() => {
                 statusMessage.textContent = errorMessage;
                 console.error(error);
-            });
+                });
 
             const inputs = form.querySelectorAll('input');
             inputs.forEach((elem) => elem.value = '');
@@ -410,22 +413,28 @@ window.addEventListener('DOMContentLoaded', () => {
     sendForm('form2');
     sendForm('form3');
 
-    const postData = (body, outputData, errorData) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener('readystatechange', () => {
+    const postData = (body) => {
+        return new Promise((resolve, reject) => {
+            const request = new XMLHttpRequest();
 
-            if (request.readyState !== 4) {
-                return;
-            }
-            if (request.status === 200) {
-                outputData();
-            } else {
-                errorData(request.status);
-            }
+            request.addEventListener('readystatechange', () => {
+
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+
+                    resolve();
+
+                } else {
+                    reject(request.statusText);
+                }
+            });
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
         });
-        request.open('POST', './server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(body));
+
     };
 
 
