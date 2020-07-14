@@ -388,20 +388,23 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             const formData = new FormData(form);
-            let body = {};
+            // let body = {};
 
-            for (let val of formData.entries()) {
-                body[val[0]] = val[1];
+            // for (let val of formData.entries()) {
+            //     body[val[0]] = val[1];
 
-            };
+            // };
 
-            postData(body)
-            .then(() => {
-                statusMessage.textContent = successMesage;
+            postData(formData) // возможно здесь надо оставить postData(body) 
+                .then((response) => {
+                    if (response.status !== 200) {
+                        throw new Error('status network not 200');
+                    }
+                    statusMessage.textContent = successMesage;
                 })
-            .catch(() => {
-                statusMessage.textContent = errorMessage;
-                console.error(error);
+                .catch((error) => {
+                    console.log(error);
+                    statusMessage.textContent = errorMessage;
                 });
 
             const inputs = form.querySelectorAll('input');
@@ -413,28 +416,14 @@ window.addEventListener('DOMContentLoaded', () => {
     sendForm('form2');
     sendForm('form3');
 
-    const postData = (body) => {
-        return new Promise((resolve, reject) => {
-            const request = new XMLHttpRequest();
-
-            request.addEventListener('readystatechange', () => {
-
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-
-                    resolve();
-
-                } else {
-                    reject(request.statusText);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
+    const postData = (formData) => { // возможно здесь надо оставить postData = (body) 
+        return fetch('./server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: formData // или body передаем во все функци(вместо formData), возвращаем цикл перебора и записи в body и здесь пишем JSON.stringify(body) В видео непонятно сказано, я поняла, что надо так
         });
-
     };
 
 

@@ -1,36 +1,78 @@
-const output = document.getElementById('output');
-const getdata = (url) => {
+// const request = new XMLHttpRequest();
 
-    return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.open('GET', url);
-        request.addEventListener('readystatechange', () => {
-            if (request.readyState !== 4) {
-                return
-            }
-            if (request.status === 200) {
-                const response = JSON.parse(request.responseText);
-                resolve(response);
-            } else {
-                reject(request.statusText)
-            }
-        });
-        request.send();
+//             request.addEventListener('readystatechange', () => {
+
+//                 if (request.readyState !== 4) {
+//                     return;
+//                 }
+//                 if (request.status === 200) {
+
+//                     resolve();
+
+//                 } else {
+//                     reject(request.statusText);
+//                 }
+//             });
+//             request.open('POST', './server.php');
+//             request.setRequestHeader('Content-Type', 'application/json');
+//             request.send(JSON.stringify(body));
+
+
+    fetch('./server.php', {
+        method: 'POST',
+    })
+    .then((response) => {
+        if(response.status !== 200) {
+            throw new Error('status network not 200');
+        }
+        return (response);
+    })
+    .then((data) => {
+        resolve(data);
+    })
+    .catch((error) => {
+        reject();
     });
 
-};
-
-const outputPhotos = (data) => {
-    const random = Math.floor(Math.random() * data.length);
-    const obj = data[random];
-    output.innerHTML = `some html text`;
-};
-const urlPhoto = 'adress';
 
 
-getData(urlPhoto)
-.then(outputPhotos)
-.catch(error => console.error(error));
+
+
+
+
+// const output = document.getElementById('output');
+// const getdata = (url) => {
+
+//     return new Promise((resolve, reject) => {
+//         const request = new XMLHttpRequest();
+//         request.open('GET', url);
+//         request.addEventListener('readystatechange', () => {
+//             if (request.readyState !== 4) {
+//                 return
+//             }
+//             if (request.status === 200) {
+//                 const response = JSON.parse(request.responseText);
+//                 resolve(response);
+//             } else {
+//                 reject(request.statusText)
+//             }
+//         });
+//         request.send();
+//     });
+
+// };
+
+// const outputPhotos = (data) => {
+//     const random = Math.floor(Math.random() * data.length);
+//     const obj = data[random];
+//     output.innerHTML = `some html text`;
+// };
+// const urlPhoto = 'adress';
+
+
+// getData(urlPhoto)
+// .then(outputPhotos)
+// .catch(error => console.error(error));
 
 
 // const output = document.getElementById('output');
