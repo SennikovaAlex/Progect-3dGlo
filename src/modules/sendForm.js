@@ -9,7 +9,8 @@ const sendForm = (formSelect) => {
 
     const phoneInputs = form.querySelector('[type="tel"]');
     phoneInputs.addEventListener('input', () =>{
-        phoneInputs.value = phoneInputs.value.replace(/(?<!^)\+|[^\d+]/g, '');
+        phoneInputs.value = phoneInputs.value.replace(/[^\d+]/g, '');
+        //(/(?<!^)\+|[^\d+]/g, '');
     });
 
     const textInputs = form.querySelector('[type="text"]');
@@ -68,6 +69,7 @@ const sendForm = (formSelect) => {
             body: JSON.stringify(body)
         });
     };
+    console.log(12345)
 };
 
 export default sendForm;

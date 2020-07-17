@@ -1,5 +1,11 @@
 'use strict';
 
+// import "@babel/polyfill";
+
+import 'nodelist-foreach-polyfill';
+import "@babel/polyfill";
+import "formdata-polyfill";
+
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
 import togglePopUp from './modules/togglePopUp';
@@ -15,7 +21,8 @@ import sendForm from './modules/sendForm';
 
 
 //timer
-countTimer('20 july 20');
+// countTimer('20 july 20');
+countTimer('2020-07-27');
 // меню
 toggleMenu();
 // popup
