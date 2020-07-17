@@ -8,12 +8,17 @@ const toggleMenu = () => {
 
     body.addEventListener('click', (event) => {
         const target = event.target;
-        if (target.closest('.menu')) {
+        if (target.closest('.menu') && target !== 'LI') {
             handlerMenu();
-        } else if (target.closest('.active-menu') && target.tagName !== 'MENU') {
+
+
+        } else if (target.closest('.active-menu') && target.tagName !== 'MENU' && target.tagName !== 'LI') {
             handlerMenu();
-        } else if (target.tagName !== 'MENU') {
+
+
+        } else if (target.tagName !== 'MENU' && target.tagName !== 'LI') {
             menu.classList.remove('active-menu');
+
         }
     });
 };

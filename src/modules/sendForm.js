@@ -29,7 +29,7 @@ const sendForm = (formSelect) => {
 
         event.preventDefault();
         form.appendChild(statusMessage);
-        if (!statusMessage.textContent) { 
+        if (!statusMessage.textContent) {
             statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
         } else {
             statusMessage.textContent = '';
@@ -50,10 +50,16 @@ const sendForm = (formSelect) => {
                     throw new Error('status network not 200');
                 }
                 statusMessage.textContent = successMesage;
+                setTimeout(()=>{
+                    statusMessage.remove();
+                }, 5000);
             })
             .catch((error) => {
                 console.log(error);
                 statusMessage.textContent = errorMessage;
+                setTimeout(()=>{
+                    statusMessage.remove();
+                }, 5000);
             });
 
         const inputs = form.querySelectorAll('input');
@@ -69,7 +75,6 @@ const sendForm = (formSelect) => {
             body: JSON.stringify(body)
         });
     };
-    console.log(12345)
 };
 
 export default sendForm;
