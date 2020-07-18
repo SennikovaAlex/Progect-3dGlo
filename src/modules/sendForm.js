@@ -27,43 +27,53 @@ const sendForm = (formSelect) => {
 
     form.addEventListener('submit', (event) => {
 
-        event.preventDefault();
-        form.appendChild(statusMessage);
-        if (!statusMessage.textContent) {
-            statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+        
+
+        if (phoneInputs.value.length >= 5 && phoneInputs.value.length <= 15) {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+            if (!statusMessage.textContent) {
+                statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+            } else {
+                statusMessage.textContent = '';
+                statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+            }
+    
+            const formData = new FormData(form);
+            let body = {};
+    
+            for (let val of formData.entries()) {
+                body[val[0]] = val[1];
+    
+            };
+    
+            postData(body)
+                .then((response) => {
+                    if (response.status !== 200) {
+                        throw new Error('status network not 200');
+                    }
+                    statusMessage.textContent = successMesage;
+                    setTimeout(()=>{
+                        statusMessage.remove();
+                    }, 5000);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    statusMessage.textContent = errorMessage;
+                    setTimeout(()=>{
+                        statusMessage.remove();
+                    }, 5000);
+                });
+    
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach((elem) => elem.value = '');
         } else {
-            statusMessage.textContent = '';
-            statusMessage.insertAdjacentHTML('beforeend', '<img src="./images/5.gif">');
+            event.preventDefault();
+            form.appendChild(statusMessage);
+            const phoneInput = form.querySelector('[type="tel"]');
+            phoneInput.value = '';
+            statusMessage.textContent = 'введите корректный номер телефона';
         }
-
-        const formData = new FormData(form);
-        let body = {};
-
-        for (let val of formData.entries()) {
-            body[val[0]] = val[1];
-
-        };
-
-        postData(body)
-            .then((response) => {
-                if (response.status !== 200) {
-                    throw new Error('status network not 200');
-                }
-                statusMessage.textContent = successMesage;
-                setTimeout(()=>{
-                    statusMessage.remove();
-                }, 5000);
-            })
-            .catch((error) => {
-                console.log(error);
-                statusMessage.textContent = errorMessage;
-                setTimeout(()=>{
-                    statusMessage.remove();
-                }, 5000);
-            });
-
-        const inputs = form.querySelectorAll('input');
-        inputs.forEach((elem) => elem.value = '');
 
     });
     const postData = (body) => { 
@@ -78,3 +88,5 @@ const sendForm = (formSelect) => {
 };
 
 export default sendForm;
+
+// if (phoneInputs.value.length >= 5 && phoneInputs.value.length <= 15) {
